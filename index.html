@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project Proposal: The Intelligent Routing Engine for Forbes Marshall</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0f172a; /* slate-900 */
+            color: #cbd5e1; /* slate-300 */
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 320px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 400px;
+            }
+        }
+        .nav-link {
+            transition: color 0.3s ease, border-bottom-color 0.3s ease;
+            border-bottom: 2px solid transparent;
+        }
+        .nav-link:hover, .nav-link.active {
+            color: #60a5fa; /* blue-400 */
+            border-bottom-color: #60a5fa; /* blue-400 */
+        }
+        .flowchart-node {
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        .flowchart-node:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+        }
+        .tab-button.active {
+            background-color: #2563eb;
+            color: white;
+        }
+        .phase.active .phase-details {
+            max-height: 1000px;
+            opacity: 1;
+            padding-top: 1rem;
+            padding-bottom: 1rem;
+        }
+        .tech-focus {
+            background-color: #1e293b; /* slate-800 */
+            border-left: 4px solid #4f46e5;
+        }
+    </style>
+</head>
+<body class="antialiased">
+    <!-- Chosen Palette: Corporate Blueprint (Dark Mode) -->
+    <!-- Application Structure Plan: A thematic, single-page dashboard structure is used to transform the linear report into an engaging, non-linear experience. The structure includes a sticky navigation header, a hero section, and dedicated, interactive sections for "The Challenge," "The Solution," "The Roadmap," and "The Impact." This design allows stakeholders (e.g., management, technical teams) to quickly navigate to the content most relevant to them, enhancing usability and comprehension. Interactive elements like hover-able flowcharts, clickable tabs for the solution layers, and an expandable timeline for the roadmap are chosen to make complex information more digestible and memorable than static text or images. -->
+    <!-- Visualization & Content Choices: 
+        - Report Info: Current OSP Workflow -> Goal: Explain Inefficiencies -> Viz: HTML/CSS Flowchart -> Interaction: Hover on nodes to see pain point tooltips -> Justification: Makes a complex process interactive and highlights bottlenecks clearly.
+        - Report Info: System Architecture -> Goal: Explain System Integration -> Viz: HTML/CSS Diagram -> Interaction: Hover on components for descriptions -> Justification: Clarifies the relationship between systems without overwhelming the user.
+        - Report Info: 3 Layers of Intelligence -> Goal: Organize & Detail Solution -> Viz: Tabbed Interface -> Interaction: Click tabs to reveal content -> Justification: Presents dense information in a clean, user-controlled manner.
+        - Report Info: Project Phases -> Goal: Show Project Plan -> Viz: HTML/CSS Timeline -> Interaction: Click to expand phase details -> Justification: More engaging and space-efficient than a static Gantt chart.
+        - Report Info: KPI Projections -> Goal: Compare & Show Impact -> Viz: Bar/Line/Donut Charts (Chart.js) -> Interaction: Hover for tooltips with data points -> Justification: Provides a clear, quantitative visualization of the project's value proposition.
+    -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+
+    <header id="header" class="bg-slate-900/80 backdrop-blur-lg shadow-sm sticky top-0 z-50">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <h1 class="text-xl md:text-2xl font-bold text-blue-400">Intelligent Routing Engine</h1>
+            <div class="hidden md:flex items-center space-x-8">
+                <a href="#challenge" class="nav-link font-medium pb-1">The Challenge</a>
+                <a href="#solution" class="nav-link font-medium pb-1">The Solution</a>
+                <a href="#roadmap" class="nav-link font-medium pb-1">The Roadmap</a>
+                <a href="#impact" class="nav-link font-medium pb-1">The Impact</a>
+                <a href="#team" class="nav-link font-medium pb-1">Our Team</a>
+                <a href="#scenario-analysis" class="nav-link font-medium pb-1">Scenario Analysis</a>
+            </div>
+            <a href="#conclusion" class="hidden md:inline-block bg-blue-600 text-white font-semibold px-5 py-2 rounded-lg hover:bg-blue-500 transition-colors">Project Kick-off</a>
+        </nav>
+    </header>
+
+    <main>
+        <section id="hero" class="bg-slate-900 py-20 md:py-32">
+            <div class="container mx-auto px-6 text-center">
+                <h2 class="text-4xl md:text-6xl font-bold leading-tight text-slate-100 mb-4">A Strategic Partnership for <br><span class="text-blue-400">Operational Excellence</span></h2>
+                <p class="text-lg md:text-xl text-slate-400 max-w-3xl mx-auto mb-8">Transforming Forbes Marshall's Outside Processing (OSP) with an intelligent, automated routing system designed to reduce lead times, cut costs, and build a scalable foundation for future growth.</p>
+                <a href="#challenge" class="bg-blue-600 text-white font-bold px-8 py-4 rounded-lg text-lg hover:bg-blue-500 transition-colors">Explore the Proposal</a>
+            </div>
+        </section>
+
+        <section id="challenge" class="py-20 bg-slate-800">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-16">
+                    <h3 class="text-4xl font-bold text-slate-100 mb-3">Understanding the Challenge</h3>
+                    <p class="text-lg text-slate-400 max-w-3xl mx-auto">The current manual OSP workflow, while functional, contains numerous points of friction that introduce delays, increase costs, and create risk. This section visualizes the problem we aim to solve.</p>
+                </div>
+                
+                <div class="relative p-8">
+                    <h4 class="text-2xl font-semibold text-center mb-10 text-slate-200">Visualizing the "As-Is" Manual Workflow</h4>
+                    <div class="flex flex-col md:flex-row items-center justify-center space-y-4 md:space-y-0 md:space-x-4 flex-wrap">
+                        <div class="flowchart-node bg-slate-700 p-4 rounded-lg shadow-md w-60 text-center border-2 border-slate-600" data-tooltip="The start of the process, triggered by production demand.">
+                            <div class="font-bold text-slate-100">Work Order Created</div>
+                            <div class="text-sm text-slate-400">OSP Need Identified</div>
+                        </div>
+                        <div class="text-2xl font-mono text-slate-500">&rarr;</div>
+                        <div class="flowchart-node bg-slate-700 p-4 rounded-lg shadow-md w-60 text-center border-2 border-red-400" data-tooltip="Pain Point: Time-consuming manual checks against MES data and spreadsheets. High potential for using outdated information.">
+                            <div class="font-bold text-red-400">Manual Checks</div>
+                            <div class="text-sm text-slate-400">Internal Capacity & Vendor List</div>
+                        </div>
+                        <div class="text-2xl font-mono text-slate-500">&rarr;</div>
+                        <div class="flowchart-node bg-slate-700 p-4 rounded-lg shadow-md w-60 text-center border-2 border-red-400" data-tooltip="Pain Point: Communication delays via phone/email. No real-time data on vendor price, lead time, or capacity.">
+                            <div class="font-bold text-red-400">Vendor Communication</div>
+                            <div class="text-sm text-slate-400">Verify Price & Availability</div>
+                        </div>
+                        <div class="text-2xl font-mono text-slate-500 mt-4 md:mt-0">&rarr;</div>
+                        <div class="flowchart-node bg-slate-700 p-4 rounded-lg shadow-md w-60 text-center border-2 border-red-400" data-tooltip="Pain Point: Manual data entry into SAP is slow and prone to human error (wrong codes, quantities, or prices).">
+                            <div class="font-bold text-red-400">Manual PR Creation</div>
+                            <div class="text-sm text-slate-400">Data Entry in ERP</div>
+                        </div>
+                         <div class="text-2xl font-mono text-slate-500 mt-4 md:mt-0">&rarr;</div>
+                        <div class="flowchart-node bg-slate-700 p-4 rounded-lg shadow-md w-60 text-center border-2 border-slate-600" data-tooltip="The part is finally sent for outside processing, but significant time has already been lost.">
+                            <div class="font-bold text-slate-100">Part Shipped</div>
+                            <div class="text-sm text-slate-400">Process Begins</div>
+                        </div>
+                    </div>
+                    <p class="text-center mt-8 text-slate-500 italic">Hover over each step to see the associated pain points.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="solution" class="py-20 bg-slate-900">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-16">
+                    <h3 class="text-4xl font-bold text-slate-100 mb-3">The Solution Blueprint</h3>
+                    <p class="text-lg text-slate-400 max-w-3xl mx-auto">The Intelligent Routing Engine is a multi-layered system designed to automate and optimize OSP decisions by seamlessly integrating with your existing operational landscape.</p>
+                </div>
+
+                <div class="bg-slate-800 p-8 rounded-2xl mb-12">
+                    <h4 class="text-2xl font-semibold text-center mb-8 text-slate-200">System Architecture: A Closed-Loop System</h4>
+                     <div class="flex flex-col md:flex-row justify-between items-center space-y-8 md:space-y-0 text-center">
+                        <div class="w-full md:w-1/4">
+                            <div class="p-6 bg-slate-700 rounded-xl shadow-md border border-slate-600">
+                                <h5 class="text-lg font-bold text-blue-400">ERP (SAP)</h5>
+                                <p class="text-sm text-slate-400">Source of master data: work orders, materials, vendors.</p>
+                            </div>
+                        </div>
+                        <div class="text-2xl font-bold text-slate-600 transform rotate-90 md:rotate-0">&harr;</div>
+                        <div class="w-full md:w-2/4">
+                            <div class="p-6 bg-blue-600 text-white rounded-xl shadow-lg border-4 border-blue-400">
+                                <h5 class="text-xl font-bold">Intelligent Routing Engine</h5>
+                                <p class="text-sm opacity-90">Receives data, applies intelligence, and makes optimal routing decisions in real-time.</p>
+                            </div>
+                        </div>
+                        <div class="text-2xl font-bold text-slate-600 transform rotate-90 md:rotate-0">&harr;</div>
+                        <div class="w-full md:w-1/4">
+                            <div class="p-6 bg-slate-700 rounded-xl shadow-md border border-slate-600">
+                                <h5 class="text-lg font-bold text-blue-400">MES</h5>
+                                <p class="text-sm text-slate-400">Provides real-time shop floor data: machine capacity, WIP status.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mb-16">
+                    <h4 class="text-2xl font-semibold text-center mb-8 text-slate-200">The Three Layers of Intelligence</h4>
+                    <div class="max-w-4xl mx-auto">
+                        <div class="flex justify-center mb-6 border-b border-slate-700">
+                            <button class="tab-button flex-1 py-3 px-4 font-semibold text-slate-400 transition-colors active" data-tab="1">1. Rule-Based Engine</button>
+                            <button class="tab-button flex-1 py-3 px-4 font-semibold text-slate-400 transition-colors" data-tab="2">2. Optimization Model</button>
+                            <button class="tab-button flex-1 py-3 px-4 font-semibold text-slate-400 transition-colors" data-tab="3">3. Machine Learning</button>
+                        </div>
+                        <div class="p-6 bg-slate-800 rounded-lg">
+                            <div class="tab-content" id="tab-1">
+                                <h5 class="font-bold text-lg mb-2 text-blue-400">The Foundation for Consistency</h5>
+                                <p class="text-slate-400">This layer digitizes your standard operating procedures using simple "if-then" logic. It handles the majority of straightforward decisions with perfect consistency, ensuring company policies are always followed.</p>
+                                <div class="mt-4 p-3 bg-slate-700 text-slate-300 rounded-md font-mono text-sm">IF (Internal_Capacity &lt; 90%) THEN Route_Internally; <br>ELSE Flag_for_OSP = TRUE</div>
+                            </div>
+                             <div class="tab-content hidden" id="tab-2">
+                                <h5 class="font-bold text-lg mb-2 text-blue-400">The Engine for Efficiency</h5>
+                                <p class="text-slate-400">When multiple factors compete (cost, lead time, quality), this layer uses mathematical solvers to find the genuinely optimal solution. It answers: "What is the absolute best choice among all valid options?"</p>
+                                 <div class="mt-4 p-3 bg-slate-700 text-slate-300 rounded-md font-mono text-sm">Minimize(Total_Cost) WHERE Vendor_Quality &gt; 95% AND Lead_Time &lt; 10_days</div>
+                            </div>
+                             <div class="tab-content hidden" id="tab-3">
+                                <h5 class="font-bold text-lg mb-2 text-blue-400">The Brain for Adaptation</h5>
+                                <p class="text-slate-400">This forward-looking layer learns from historical data to predict future outcomes. It can predict a vendor's actual delivery time (not just their quote) or flag a potential quality dip before it happens.</p>
+                                 <div class="mt-4 p-3 bg-slate-700 text-slate-300 rounded-md font-mono text-sm">Predict(Vendor_A_Lead_Time) based on last 50 orders' performance.</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="roadmap" class="py-20 bg-slate-800">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-16">
+                    <h3 class="text-4xl font-bold text-slate-100 mb-3">The Transformation Roadmap</h3>
+                    <p class="text-lg text-slate-400 max-w-3xl mx-auto">Our four-phase methodology is designed to de-risk the project, ensure continuous alignment, and deliver tangible value at every stage.</p>
+                </div>
+                <div class="w-full max-w-5xl mx-auto">
+                    <div class="relative">
+                        <div class="absolute left-1/2 top-0 bottom-0 w-1 bg-slate-700 rounded hidden md:block"></div>
+                        <div class="space-y-12">
+                            <!-- Phase 1 -->
+                            <div class="phase" data-phase="1">
+                                <div class="phase-header flex md:items-center flex-col md:flex-row cursor-pointer">
+                                    <div class="md:w-1/2 md:pr-8 md:text-right">
+                                        <div class="text-blue-400 font-bold">Weeks 1-4</div>
+                                        <h4 class="text-2xl font-bold text-slate-100">Phase 1: Discovery & Foundation</h4>
+                                    </div>
+                                    <div class="w-12 h-12 bg-blue-600 text-white rounded-full flex items-center justify-center font-bold text-xl z-10 my-4 md:my-0 flex-shrink-0">1</div>
+                                    <div class="md:w-1/2 md:pl-8"></div>
+                                </div>
+                                <div class="phase-details overflow-hidden transition-all duration-500 max-h-0 opacity-0 text-left md:text-center">
+                                    <div class="max-w-md mx-auto space-y-4">
+                                        <div class="tech-focus p-4 rounded-lg text-left">
+                                            <h6 class="font-bold text-indigo-300">Technical Focus:</h6>
+                                            <p class="text-slate-400 mt-1 mb-2">This phase is about creating the data blueprint. We'll define exactly what information the engine needs and where to get it.</p>
+                                            <ul class="list-disc list-inside text-indigo-400 text-sm space-y-1">
+                                                <li>**SAP Integration:** We'll map out the specific data fields to pull from SAP, like material codes and vendor lead times.</li>
+                                                <li>**MES Integration:** We'll define how to get real-time machine availability from the shop floor systems.</li>
+                                                <li>**Data Pipelines:** We'll design the data streams (using Kafka) that will act as the system's central nervous system.</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Phase 2 -->
+                            <div class="phase" data-phase="2">
+                                <div class="phase-header flex md:items-center flex-col md:flex-row-reverse cursor-pointer">
+                                    <div class="md:w-1/2 md:pl-8 md:text-left">
+                                        <div class="text-blue-400 font-bold">Weeks 5-12</div>
+                                        <h4 class="text-2xl font-bold text-slate-100">Phase 2: Design & Prototyping</h4>
+                                    </div>
+                                    <div class="w-12 h-12 bg-blue-600 text-white rounded-full flex items-center justify-center font-bold text-xl z-10 my-4 md:my-0 flex-shrink-0">2</div>
+                                    <div class="md:w-1/2 md:pr-8"></div>
+                                </div>
+                                <div class="phase-details overflow-hidden transition-all duration-500 max-h-0 opacity-0 text-left md:text-center">
+                                    <div class="max-w-md mx-auto space-y-4">
+                                        <div class="tech-focus p-4 rounded-lg text-left">
+                                            <h6 class="font-bold text-indigo-300">Technical Focus:</h6>
+                                            <p class="text-slate-400 mt-1 mb-2">Here, we build the first working version of the engine's "brain" and a basic user interface to prove the concept.</p>
+                                            <ul class="list-disc list-inside text-indigo-400 text-sm space-y-1">
+                                                <li>**Rule-Based Engine:** We'll code the core "if-then" logic in Python to handle simple decisions automatically.</li>
+                                                <li>**Data Consumption:** The engine will be taught to "listen" to the Kafka data streams for live updates.</li>
+                                                <li>**UI Prototype:** We'll build the first screens of the planner's dashboard using React.</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Phase 3 -->
+                            <div class="phase" data-phase="3">
+                                <div class="phase-header flex md:items-center flex-col md:flex-row cursor-pointer">
+                                    <div class="md:w-1/2 md:pr-8 md:text-right">
+                                        <div class="text-blue-400 font-bold">Weeks 13-24</div>
+                                        <h4 class="text-2xl font-bold text-slate-100">Phase 3: Development & Testing</h4>
+                                    </div>
+                                    <div class="w-12 h-12 bg-blue-600 text-white rounded-full flex items-center justify-center font-bold text-xl z-10 my-4 md:my-0 flex-shrink-0">3</div>
+                                    <div class="md:w-1/2 md:pl-8"></div>
+                                </div>
+                                <div class="phase-details overflow-hidden transition-all duration-500 max-h-0 opacity-0 text-left md:text-center">
+                                    <div class="max-w-md mx-auto space-y-4">
+                                        <div class="tech-focus p-4 rounded-lg text-left">
+                                            <h6 class="font-bold text-indigo-300">Technical Focus:</h6>
+                                            <p class="text-slate-400 mt-1 mb-2">This is where we build the advanced intelligence and connect all the pieces for full-scale testing.</p>
+                                            <ul class="list-disc list-inside text-indigo-400 text-sm space-y-1">
+                                                <li>**Optimization Model:** We'll integrate a powerful solver (like Gurobi) to handle complex decisions with many variables.</li>
+                                                <li>**Machine Learning:** We'll train the first predictive model (using TensorFlow) on historical data to forecast lead times.</li>
+                                                <li>**Full UI:** The complete React dashboard will be built, showing live data and alerts.</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Phase 4 -->
+                            <div class="phase" data-phase="4">
+                                <div class="phase-header flex md:items-center flex-col md:flex-row-reverse cursor-pointer">
+                                    <div class="md:w-1/2 md:pl-8 md:text-left">
+                                        <div class="text-blue-400 font-bold">Weeks 25+</div>
+                                        <h4 class="text-2xl font-bold text-slate-100">Phase 4: Deployment & Improvement</h4>
+                                    </div>
+                                    <div class="w-12 h-12 bg-blue-600 text-white rounded-full flex items-center justify-center font-bold text-xl z-10 my-4 md:my-0 flex-shrink-0">4</div>
+                                    <div class="md:w-1/2 md:pr-8"></div>
+                                </div>
+                                <div class="phase-details overflow-hidden transition-all duration-500 max-h-0 opacity-0 text-left md:text-center">
+                                    <div class="max-w-md mx-auto space-y-4">
+                                        <div class="tech-focus p-4 rounded-lg text-left">
+                                            <h6 class="font-bold text-indigo-300">Technical Focus:</h6>
+                                            <p class="text-slate-400 mt-1 mb-2">In this phase, we go live. The system is deployed to a pilot production line and we establish the processes for it to run and improve itself over time.</p>
+                                            <ul class="list-disc list-inside text-indigo-400 text-sm space-y-1">
+                                                <li>**Deployment:** We'll package the application into containers (using Docker) for stable, reliable deployment.</li>
+                                                <li>**Live Monitoring:** We'll set up dashboards to monitor the health and performance of the live system.</li>
+                                                <li>**Continuous Learning:** We'll automate the process for the ML model to retrain itself on new data each week, so it gets smarter over time.</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="text-center mt-8 text-slate-500 italic">Click on a phase to expand its details.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="impact" class="py-20 bg-slate-900">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-16">
+                    <h3 class="text-4xl font-bold text-slate-100 mb-3">Measuring What Matters: Projected Impact</h3>
+                    <p class="text-lg text-slate-400 max-w-3xl mx-auto">The engine is designed to drive significant, measurable breakthroughs in efficiency, cost, and reliability. Here are the projected improvements to key KPIs.</p>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+                    <div class="bg-slate-800 p-6 rounded-xl">
+                        <h4 class="text-xl font-semibold text-center mb-4 text-slate-200">OSP Lead Time Reduction</h4>
+                        <div class="chart-container"><canvas id="leadTimeChart"></canvas></div>
+                        <p class="text-center text-sm text-slate-500 mt-2">Projected to reduce average end-to-end OSP cycle time by over 40%.</p>
+                    </div>
+                    <div class="bg-slate-800 p-6 rounded-xl">
+                        <h4 class="text-xl font-semibold text-center mb-4 text-slate-200">Operational Cost Savings</h4>
+                        <div class="chart-container"><canvas id="costChart"></canvas></div>
+                        <p class="text-center text-sm text-slate-500 mt-2">Minimizing administrative overhead and eliminating most expedite fees.</p>
+                    </div>
+                    <div class="bg-slate-800 p-6 rounded-xl">
+                        <h4 class="text-xl font-semibold text-center mb-4 text-slate-200">Production Schedule Adherence</h4>
+                        <div class="chart-container"><canvas id="adherenceChart"></canvas></div>
+                        <p class="text-center text-sm text-slate-500 mt-2">Improved OSP reliability leads to a direct increase in on-time delivery.</p>
+                    </div>
+                    <div class="bg-slate-800 p-6 rounded-xl">
+                        <h4 class="text-xl font-semibold text-center mb-4 text-slate-200">Planner Productivity & Focus</h4>
+                        <div class="chart-container"><canvas id="productivityChart"></canvas></div>
+                        <p class="text-center text-sm text-slate-500 mt-2">Shifting focus from tactical tasks to high-value strategic oversight.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="team" class="py-20 bg-slate-800">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-16">
+                    <h3 class="text-4xl font-bold text-slate-100 mb-3">Meet the Experts: Our Team</h3>
+                    <p class="text-lg text-slate-400 max-w-3xl mx-auto">This project will be led by a team of highly motivated college students driven by a strong passion for technology and a deep eagerness to learn, grow, and make an impact in the tech world.</p>
+                </div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-8">
+                    <!-- Team Member 1 -->
+                    <div class="bg-slate-700 p-6 rounded-lg text-center shadow-lg transform hover:-translate-y-2 transition-transform duration-300">
+                        <img class="w-24 h-24 rounded-full mx-auto mb-4 border-4 border-blue-400" src="https://placehold.co/128x128/60a5fa/FFFFFF?text=AB" alt="Arush Badhe">
+                        <h4 class="text-lg font-bold text-white">Arush Badhe</h4>
+                        <p class="text-blue-400 font-medium text-sm">TY-IT-A-16</p>
+                        <p class="text-slate-400 text-sm mt-2">Architect & Backend Lead: Builds the core application brain and decision-making logic in Python.</p>
+                        <a href="https://dev-profile-ochre.vercel.app/" target="_blank" class="mt-4 inline-block bg-blue-600 text-white font-semibold px-4 py-2 rounded-lg text-sm hover:bg-blue-500 transition-colors">View Resume</a>
+
+                    </div>
+                    <!-- Team Member 2 -->
+                    <div class="bg-slate-700 p-6 rounded-lg text-center shadow-lg transform hover:-translate-y-2 transition-transform duration-300">
+                        <img class="w-24 h-24 rounded-full mx-auto mb-4 border-4 border-blue-400" src="https://placehold.co/128x128/60a5fa/FFFFFF?text=AK" alt="Aryan Kumar">
+                        <h4 class="text-lg font-bold text-white">Aryan Kumar</h4>
+                        <p class="text-blue-400 font-medium text-sm">TY-IT-A-18</p>
+                        <p class="text-slate-400 text-sm mt-2">Data & Integration Engineer: Manages all data pipelines and simulates the SAP/MES system connections.</p>
+                        <a href="https://drive.google.com/file/d/1u9teJEBbEXo0vGyk33yrz-dtJF_M7bRW/view?usp=sharing" target="_blank" class="mt-4 inline-block bg-blue-600 text-white font-semibold px-4 py-2 rounded-lg text-sm hover:bg-blue-500 transition-colors">View Resume (PDF)</a>
+                    </div>
+                    <!-- Team Member 3 -->
+                    <div class="bg-slate-700 p-6 rounded-lg text-center shadow-lg transform hover:-translate-y-2 transition-transform duration-300">
+                        <img class="w-24 h-24 rounded-full mx-auto mb-4 border-4 border-blue-400" src="https://placehold.co/128x128/60a5fa/FFFFFF?text=SA" alt="Sharva Ansingkar">
+                        <h4 class="text-lg font-bold text-white">Sharva Ansingkar</h4>
+                        <p class="text-blue-400 font-medium text-sm">TY-IT-A-12</p>
+                        <p class="text-slate-400 text-sm mt-2">Frontend & UI/UX Developer: Creates the interactive dashboard and all visual components the user interacts with.</p>
+                        <a href="#" target="_blank" class="mt-4 inline-block bg-blue-600 text-white font-semibold px-4 py-2 rounded-lg text-sm hover:bg-blue-500 transition-colors">View Resume (PDF)</a>
+                    </div>
+                    <!-- Team Member 4 -->
+                    <div class="bg-slate-700 p-6 rounded-lg text-center shadow-lg transform hover:-translate-y-2 transition-transform duration-300">
+                        <img class="w-24 h-24 rounded-full mx-auto mb-4 border-4 border-blue-400" src="https://placehold.co/128x128/60a5fa/FFFFFF?text=AM" alt="Anshul Madiwaar">
+                        <h4 class="text-lg font-bold text-white">Anshul Madiwaar</h4>
+                        <p class="text-blue-400 font-medium text-sm">TY-IT-A-11</p>
+                        <p class="text-slate-400 text-sm mt-2">AI & Machine Learning Specialist: Trains the predictive models and implements the Gemini API features.</p>
+                        <a href="https://drive.google.com/file/d/14QzXyamoHKsYkimfxeJjcnaIqEDlrRBx/view?usp=drivesdk" target="_blank" class="mt-4 inline-block bg-blue-600 text-white font-semibold px-4 py-2 rounded-lg text-sm hover:bg-blue-500 transition-colors">View Resume (PDF)</a>
+                    </div>
+                    <!-- Team Member 5 -->
+                    <div class="bg-slate-700 p-6 rounded-lg text-center shadow-lg transform hover:-translate-y-2 transition-transform duration-300">
+                        <img class="w-24 h-24 rounded-full mx-auto mb-4 border-4 border-blue-400" src="https://placehold.co/128x128/60a5fa/FFFFFF?text=AS" alt="Arvind Sharma">
+                        <h4 class="text-lg font-bold text-white">Arvind Sharma</h4>
+                        <p class="text-blue-400 font-medium text-sm">TY-IT-A-17</p>
+                        <p class="text-slate-400 text-sm mt-2">Project Manager & QA Tester: Keeps the project organized, on schedule, and ensures the final product is bug-free.</p>
+                        <a href="#" target="_blank" class="mt-4 inline-block bg-blue-600 text-white font-semibold px-4 py-2 rounded-lg text-sm hover:bg-blue-500 transition-colors">View Resume (PDF)</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="scenario-analysis" class="py-20 bg-slate-900">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-16">
+                    <h3 class="text-4xl font-bold text-slate-100 mb-3">Emergency Scenario: A Real-World Test Case</h3>
+                    <p class="text-lg text-slate-400 max-w-3xl mx-auto">To understand the true value of the Intelligent Routing Engine, let's analyze how it would handle a sudden, high-impact disruption—a situation that would cause significant delays in the current manual system.</p>
+                </div>
+
+                <div class="max-w-4xl mx-auto">
+                    <div class="bg-red-900/20 border border-red-500 text-red-300 p-6 rounded-lg mb-12">
+                        <h4 class="text-2xl font-bold text-red-400 mb-2">The Scenario: Critical Vendor Shutdown</h4>
+                        <p class="text-red-200">Three days before a critical customer shipment, "Vendor A," the primary and most cost-effective supplier for a specialized coating process, announces an unexpected 2-week emergency maintenance shutdown. This shutdown immediately impacts three urgent work orders currently awaiting this process.</p>
+                    </div>
+
+                    <div class="space-y-8">
+                        <div>
+                            <h5 class="text-xl font-bold text-blue-400 mb-2">Phase 1 (Discovery & Foundation) Impact:</h5>
+                            <p class="text-slate-400">The foundational work in this phase is what makes an intelligent response possible. Because we mapped all OSP processes, the system already knows which parts require this specific coating. More importantly, the data foundation exercise identified and onboarded two pre-approved secondary vendors ("Vendor B" and "Vendor C") into SAP, complete with their pricing and standard lead times. **Without this phase, the system would have no alternatives to consider.**</p>
+                        </div>
+                        <div>
+                            <h5 class="text-xl font-bold text-blue-400 mb-2">Phase 2 (Design & Prototyping) Impact:</h5>
+                            <p class="text-slate-400">The moment Vendor A is marked "unavailable" in the system, the **Rule-Based Engine (Python)**, built during this phase, immediately triggers. Its pre-defined logic—`IF Primary_Vendor_Unavailable THEN Evaluate_Secondary_Vendors`—executes instantly. It automatically filters out Vendor A and presents Vendors B and C as the only viable options. This avoids the hours a planner would spend manually searching for alternatives. **The prototype proves this core failover logic works.**</p>
+                        </div>
+                        <div>
+                            <h5 class="text-xl font-bold text-blue-400 mb-2">Phase 3 (Development & Testing) Impact:</h5>
+                            <p class="text-slate-400">This is where the system moves from a simple failover to an optimal decision. The fully developed **Optimization Model (Gurobi)** now evaluates Vendors B and C. It considers not just their base price, but also their transport costs and, crucially, the predictions from the **Machine Learning Model (TensorFlow)**. The ML model, trained on historical data, predicts that Vendor C, while slightly cheaper, has a 20% higher risk of a 2-day delay. The optimizer weighs this risk and selects Vendor B as the best choice to protect the customer deadline. **The system doesn't just find *an* answer; it finds the *best* answer.**</p>
+                        </div>
+                        <div>
+                            <h5 class="text-xl font-bold text-blue-400 mb-2">Phase 4 (Deployment & Improvement) Impact:</h5>
+                            <p class="text-slate-400">In the live, deployed system, this entire process is seamless and automatic. The unavailability of Vendor A triggers an instant re-routing to Vendor B. A Purchase Requisition is automatically generated in SAP, and a low-priority notification appears on the planner's dashboard informing them of the change. The total time from problem to resolution is under one minute. Furthermore, the performance of Vendor B on this urgent order is captured, and this new data will be used in the next weekly retraining cycle of the ML model, making the system even smarter for the future. **The deployed system turns a potential crisis into a routine, automated event.**</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="conclusion" class="bg-slate-900 text-white">
+            <div class="container mx-auto px-6 py-20 text-center">
+                 <h3 class="text-4xl font-bold mb-4 text-slate-100">Unlock the Future of Manufacturing</h3>
+                 <p class="text-lg text-blue-200 max-w-3xl mx-auto mb-8">This initiative is more than a software project; it's a strategic partnership to build a cornerstone of operational excellence for Forbes Marshall. The path is clear, the team is ready, and the time to act is now.</p>
+                 <button id="kickoff-button" class="bg-blue-600 text-white font-bold px-8 py-4 rounded-lg text-lg hover:bg-blue-500 transition-colors">Approve Phase 1 & Schedule Kick-off</button>
+            </div>
+        </section>
+    </main>
+    
+    <div id="tooltip" class="absolute bg-slate-900 text-white text-sm rounded-lg px-3 py-2" style="display: none; transition: opacity 0.3s; z-index: 100;"></div>
+
+    <footer class="bg-slate-900 text-slate-500 py-6">
+        <div class="container mx-auto px-6 text-center text-sm">
+            <p>&copy; 2025. Project Proposal for Forbes Marshall. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            
+            const chartFontColor = '#cbd5e1'; // slate-300
+            
+            const chartOptions = {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: { legend: { display: false }, title: { display: false } },
+                scales: {
+                    y: { 
+                        beginAtZero: true, 
+                        grid: { color: '#334155' }, // slate-700
+                        ticks: { color: chartFontColor, font: { weight: '500' } } 
+                    },
+                    x: { 
+                        grid: { display: false }, 
+                        ticks: { color: chartFontColor, font: { weight: '600', size: 14 } } 
+                    }
+                }
+            };
+
+            if (document.getElementById('leadTimeChart')) {
+                new Chart(document.getElementById('leadTimeChart'), {
+                    type: 'bar',
+                    data: {
+                        labels: ['Current State', 'Future State'],
+                        datasets: [{
+                            label: 'Average Lead Time (Days)',
+                            data: [12, 7],
+                            backgroundColor: ['#f472b6', '#60a5fa'],
+                            borderColor: ['#db2777', '#2563eb'],
+                            borderWidth: 1
+                        }]
+                    },
+                    options: chartOptions
+                });
+            }
+
+            if (document.getElementById('costChart')) {
+                const costChartOptions = JSON.parse(JSON.stringify(chartOptions));
+                costChartOptions.scales.x.stacked = true;
+                costChartOptions.scales.y.stacked = true;
+                costChartOptions.plugins.legend = { position: 'bottom', labels: { color: chartFontColor } };
+
+                new Chart(document.getElementById('costChart'), {
+                    type: 'bar',
+                    data: {
+                        labels: ['Current State', 'Future State'],
+                        datasets: [
+                            { label: 'Admin Overhead', data: [30, 5], backgroundColor: '#fbbf24' },
+                            { label: 'Expedite Fees', data: [25, 2], backgroundColor: '#f87171' },
+                            { label: 'Processing Cost', data: [45, 43], backgroundColor: '#94a3b8' },
+                            { label: 'System Maintenance', data: [0, 5], backgroundColor: '#60a5fa' }
+                        ]
+                    },
+                    options: costChartOptions
+                });
+            }
+
+            if (document.getElementById('adherenceChart')) {
+                const adherenceChartOptions = JSON.parse(JSON.stringify(chartOptions));
+                adherenceChartOptions.scales.y.min = 75;
+                adherenceChartOptions.scales.y.max = 100;
+                adherenceChartOptions.scales.y.beginAtZero = false;
+
+                new Chart(document.getElementById('adherenceChart'), {
+                    type: 'line',
+                    data: {
+                        labels: ['Q1', 'Q2', 'Q3 (Go-Live)', 'Q4', 'Q1 (Next Year)'],
+                        datasets: [{
+                            label: 'On-Time Delivery %',
+                            data: [82, 83, 82, 92, 96],
+                            fill: true, backgroundColor: 'rgba(96, 165, 250, 0.2)', borderColor: '#60a5fa',
+                            tension: 0.2, pointBackgroundColor: '#60a5fa', pointRadius: 5
+                        }]
+                    },
+                    options: adherenceChartOptions
+                });
+            }
+            
+            if (document.getElementById('productivityChart')) {
+                new Chart(document.getElementById('productivityChart'), {
+                    type: 'doughnut',
+                    data: {
+                        labels: ['Manual Tasks', 'Exception Mgmt', 'Strategic Analysis'],
+                        datasets: [
+                            { label: 'Before', data: [70, 20, 10], backgroundColor: ['#f87171', '#fbbf24', '#94a3b8'] },
+                            { label: 'After', data: [15, 50, 35], backgroundColor: ['#60a5fa', '#34d399', '#a78bfa'] }
+                        ]
+                    },
+                    options: {
+                        responsive: true, maintainAspectRatio: false,
+                        plugins: {
+                           legend: { position: 'bottom', labels: { color: chartFontColor } },
+                           title: { display: true, text: 'Planner Focus: Before vs. After', color: chartFontColor, font: { size: 16, weight: '600' } }
+                        }
+                    }
+                });
+            }
+
+            const flowchartNodes = document.querySelectorAll('.flowchart-node');
+            const tooltip = document.getElementById('tooltip');
+            flowchartNodes.forEach(node => {
+                node.addEventListener('mouseenter', (e) => {
+                    tooltip.textContent = node.dataset.tooltip;
+                    tooltip.style.display = 'block';
+                    const nodeRect = e.target.getBoundingClientRect();
+                    
+                    // This calculation positions the tooltip above the node
+                    tooltip.style.left = `${window.scrollX + nodeRect.left + (nodeRect.width / 2) - (tooltip.offsetWidth / 2)}px`;
+                    tooltip.style.top = `${window.scrollY + nodeRect.top - tooltip.offsetHeight - 10}px`;
+                });
+                node.addEventListener('mouseleave', () => {
+                    tooltip.style.display = 'none';
+                });
+            });
+
+            const tabs = document.querySelectorAll('.tab-button');
+            const tabContents = document.querySelectorAll('.tab-content');
+            tabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    tabs.forEach(t => t.classList.remove('active'));
+                    tab.classList.add('active');
+                    const tabId = tab.dataset.tab;
+                    tabContents.forEach(content => {
+                        content.id === `tab-${tabId}` ? content.classList.remove('hidden') : content.classList.add('hidden');
+                    });
+                });
+            });
+
+            const phases = document.querySelectorAll('.phase');
+            phases.forEach(phase => {
+                phase.querySelector('.phase-header').addEventListener('click', () => {
+                    const isActive = phase.classList.contains('active');
+                    phases.forEach(p => p.classList.remove('active'));
+                    if (!isActive) {
+                        phase.classList.add('active');
+                    }
+                });
+            });
+
+            const navLinks = document.querySelectorAll('.nav-link');
+            const sections = document.querySelectorAll('main > section');
+            window.addEventListener('scroll', () => {
+                let current = '';
+                sections.forEach(section => {
+                    const sectionTop = section.offsetTop;
+                    if (pageYOffset >= sectionTop - 70) {
+                        current = section.getAttribute('id');
+                    }
+                });
+                navLinks.forEach(link => {
+                    link.classList.remove('active');
+                    if (link.getAttribute('href').includes(current)) {
+                        link.classList.add('active');
+                    }
+                });
+            });
+            
+            document.getElementById('kickoff-button').addEventListener('click', () => {
+                alert('Thank you for your approval! Our team is grateful for this opportunity and is looking forward to getting in touch to schedule the project kick-off meeting!');
+            });
+        });
+    </script>
+</body>
+</html>
